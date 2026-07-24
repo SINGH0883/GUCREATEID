@@ -50,38 +50,56 @@
 
 ```mermaid
 flowchart TD
+    subgraph PublicPortal ["🌐 Public Student Portal"]
+        A["index.html<br>Student Portal Landing Page"]
+        B["admin_login.php<br>Admin Login Portal"]
+    end
+
+    subgraph Authentication ["🔐 Security & Session Layer"]
+        C["login_check.php<br>Auth Verification"]
+        D[("db.php<br>MySQL Database")]
+        E["dashboard.php<br>Admin Control Center"]
+    end
+
+    subgraph AdminOperations ["⚡ Admin Operations & Data Flow"]
+        F["manage_students.php<br>Student Directory"]
+        G["add_student.php<br>New Student Form"]
+        H["export_csv.php<br>Export Engine"]
+        I["logout.php<br>Terminate Session"]
+        J["add_submit.php"]
+        K["delete_student.php"]
+        L["📥 Download Students.csv"]
+    end
+
+    A -->|Click Admin Login| B
+    B -->|Submit Credentials| C
+    C -->|Query Credentials| D
+    C -->|Success: Set Session| E
+    C -->|Failure| B
+
+    E --> F
+    E --> G
+    E --> H
+    E --> I
+
+    G -->|Submit Form| J
+    J -->|Insert Record| D
+    F -->|Delete Action| K
+    K -->|Remove Record| D
+
+    H -->|Fetch Records| D
+    H -->|Generate Stream| L
+    I -->|Redirect| A
+
     classDef portal fill:#1e293b,stroke:#38bdf8,color:#f8fafc
     classDef auth fill:#331939,stroke:#f472b6,color:#f8fafc
     classDef admin fill:#0f172a,stroke:#c084fc,color:#f8fafc
     classDef db fill:#064e3b,stroke:#34d399,color:#f8fafc
 
-    subgraph PublicPortal ["🌐 Public Student Portal"]
-        A["index.html<br/>Student Portal Landing Page"] :::portal
-        A -->|Click Admin Login| B["admin_login.php<br/>Admin Login Portal"] :::auth
-    end
-
-    subgraph Authentication ["🔐 Security & Session Layer"]
-        B -->|Submit Credentials| C["login_check.php<br/>Auth Verification"] :::auth
-        C -->|Query Credentials| D[("db.php<br/>MySQL Database")] :::db
-        C -->|Success: Set Session| E["dashboard.php<br/>Admin Control Center"] :::admin
-        C -->|Failure| B
-    end
-
-    subgraph AdminOperations ["⚡ Admin Operations & Data Flow"]
-        E --> F["manage_students.php<br/>Student Directory"] :::admin
-        E --> G["add_student.php<br/>New Student Form"] :::admin
-        E --> H["export_csv.php<br/>Export Engine"] :::admin
-        E --> I["logout.php<br/>Terminate Session"] :::auth
-
-        G -->|Submit Form| J["add_submit.php"] :::admin
-        J -->|Insert Record| D
-        F -->|Delete Action| K["delete_student.php"] :::admin
-        K -->|Remove Record| D
-
-        H -->|Fetch Records| D
-        H -->|Generate Stream| L["📥 Download Students.csv"] :::portal
-        I -->|Redirect| A
-    end
+    class A,L portal
+    class B,C,I auth
+    class E,F,G,H,J,K admin
+    class D db
 ```
 
 ---
