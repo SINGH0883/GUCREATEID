@@ -4,21 +4,19 @@
   <p><strong>GUCREATEID — Interactive Student Admission & Administrative Management Portal</strong></p>
 
   <p>
-    <a href="https://singh0883.github.io/GUCREATEID/">
-      <img src="https://img.shields.io/badge/Live_Demo-🚀_Click_Here-7aa2f7?style=for-the-badge&logo=github&logoColor=white" alt="Live Demo">
-    </a>
     <a href="https://github.com/SINGH0883/GUCREATEID/stargazers">
       <img src="https://img.shields.io/github/stars/SINGH0883/GUCREATEID?style=for-the-badge&color=7dd3fc&logo=github" alt="Stars">
     </a>
     <a href="https://github.com/SINGH0883/GUCREATEID/network/members">
       <img src="https://img.shields.io/github/forks/SINGH0883/GUCREATEID?style=for-the-badge&color=c084fc&logo=github" alt="Forks">
     </a>
+    <a href="https://github.com/SINGH0883/GUCREATEID/issues">
+      <img src="https://img.shields.io/github/issues/SINGH0883/GUCREATEID?style=for-the-badge&color=f472b6&logo=github" alt="Issues">
+    </a>
     <a href="https://github.com/SINGH0883/GUCREATEID/blob/main/LICENSE">
       <img src="https://img.shields.io/badge/License-MIT-38bdf8?style=for-the-badge" alt="License">
     </a>
   </p>
-
-  <p>🌐 <strong>Live Website:</strong> <a href="https://singh0883.github.io/GUCREATEID/">https://singh0883.github.io/GUCREATEID/</a></p>
 
 </div>
 
@@ -27,6 +25,7 @@
 ## 📌 Table of Contents
 
 - [Overview](#-overview)
+- [System Workflow Chart](#-system-workflow-chart)
 - [Key Features](#-key-features)
 - [Tech Stack](#-tech-stack)
 - [Project Directory Structure](#-project-directory-structure)
@@ -44,6 +43,46 @@
 ## 📖 Overview
 
 **GUCREATEID** is a full-featured web application designed for Galgotias University student interactions and administrative record management. It offers a sleek, modern, glassmorphism-styled landing page for prospective students while providing an authentication-backed administrative dashboard for managing student enrollments, updating records, and exporting datasets.
+
+---
+
+## 🔄 System Workflow Chart
+
+```mermaid
+flowchart TD
+    classDef portal fill:#1e293b,stroke:#38bdf8,color:#f8fafc
+    classDef auth fill:#331939,stroke:#f472b6,color:#f8fafc
+    classDef admin fill:#0f172a,stroke:#c084fc,color:#f8fafc
+    classDef db fill:#064e3b,stroke:#34d399,color:#f8fafc
+
+    subgraph PublicPortal ["🌐 Public Student Portal"]
+        A["index.html<br/>Student Portal Landing Page"] :::portal
+        A -->|Click Admin Login| B["admin_login.php<br/>Admin Login Portal"] :::auth
+    end
+
+    subgraph Authentication ["🔐 Security & Session Layer"]
+        B -->|Submit Credentials| C["login_check.php<br/>Auth Verification"] :::auth
+        C -->|Query Credentials| D[("db.php<br/>MySQL Database")] :::db
+        C -->|Success: Set Session| E["dashboard.php<br/>Admin Control Center"] :::admin
+        C -->|Failure| B
+    end
+
+    subgraph AdminOperations ["⚡ Admin Operations & Data Flow"]
+        E --> F["manage_students.php<br/>Student Directory"] :::admin
+        E --> G["add_student.php<br/>New Student Form"] :::admin
+        E --> H["export_csv.php<br/>Export Engine"] :::admin
+        E --> I["logout.php<br/>Terminate Session"] :::auth
+
+        G -->|Submit Form| J["add_submit.php"] :::admin
+        J -->|Insert Record| D
+        F -->|Delete Action| K["delete_student.php"] :::admin
+        K -->|Remove Record| D
+
+        H -->|Fetch Records| D
+        H -->|Generate Stream| L["📥 Download Students.csv"] :::portal
+        I -->|Redirect| A
+    end
+```
 
 ---
 
@@ -68,7 +107,7 @@
 | **Backend** | PHP (>= 7.4 / 8.x) | Authentication logic, CRUD operations, & session management |
 | **Database** | MySQL | Database layer (`db.php`) for persistent student records |
 | **Export Engine** | PHP CSV Stream | Automated CSV report generation |
-| **Hosting** | GitHub Pages / Apache / Nginx | Web deployment |
+| **Server Engine** | Apache / Nginx / XAMPP | Local or cloud web hosting |
 
 </div>
 
@@ -136,7 +175,7 @@ To run the complete PHP backend and MySQL database features locally:
 ## 💻 Usage Guide
 
 ### Student Portal (Frontend)
-- Visit [https://singh0883.github.io/GUCREATEID/](https://singh0883.github.io/GUCREATEID/) to view the live portal.
+- Open `index.html` in your browser.
 - Explore courses, admission details, and campus information.
 
 ### Admin Dashboard (Backend)
